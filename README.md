@@ -1,4 +1,4 @@
 TowerDefense
 ============
 
-We are building a RTS using Unity 5! 
+We are building a TowerDefense MP Game using Unity 5! 
