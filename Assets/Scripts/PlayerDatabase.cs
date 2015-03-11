@@ -23,7 +23,7 @@ public class PlayerDatabase : MonoBehaviour {
 
 	public void OnConnected(){
 		myPlayer.network = Network.player;
-		GetComponent<NetworkView>().RPC ("All_AddPlayerToList", RPCMode.AllBuffered, myPlayer.network, myPlayer.name);
+		GetComponent<NetworkView>().RPC ("All_AddPlayerToList", RPCMode.OthersBuffered, myPlayer.network, myPlayer.name);
 	}
 
 	public void OnDisconnected(){

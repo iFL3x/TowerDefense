@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
 	private LevelSettings levelSettings;
 
-	private int currentWaveNr = 1;
+	private int currentWaveNr = 2;
 	public Wave currentWave;
 
 	private Transform spawnpoint;
