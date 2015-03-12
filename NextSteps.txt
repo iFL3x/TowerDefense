@@ -1,0 +1,24 @@
+Next Steps
+-----------------------------
+- Add GUI for Turrets
+- Implement Cash-System
+- Add GUI for HP and Cash
+- Make Turrets spawnable 
+- Create collider wherein turrets cannot be spawned
+- Create Map
+- Create Models
+- Create new Turrets
+- Create new Enemies
+- Create Waves
+- Add Sound
+- Create different Maps
+- Implement Map-Selection
+-----------------------------
+
+
+Future
+-----------------------------
+Multiplayer:
+- Create Server Lobby
+- Add chat
+-----------------------------
