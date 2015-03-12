@@ -28,7 +28,6 @@ public class Projectile : MonoBehaviour {
 		} 
 
 		if(!other.CompareTag("TurretPart") && !other.CompareTag("RoutePoint")){
-			Debug.Log (other.tag + " " + other.name);
 			Destroy (gameObject);
 		}
 	}

@@ -12,9 +12,9 @@ public class PlayerDatabase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		playerList.Add(myPlayer);
-
 		myPlayer.name = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : defPlayerName;
-
+		myPlayer.health = 100;
+		myPlayer.cash = 0;
 	}
 
 	public void PlayerDisconnected(NetworkPlayer network){
@@ -37,6 +37,8 @@ public class PlayerDatabase : MonoBehaviour {
 		Player player = new Player();
 		player.network = network;
 		player.name = playerName;
+		player.health = 100;
+		player.cash = 0;
 		playerList.Add(player);
 	}
 
