@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
 
 	private LevelSettings levelSettings;
 	private PlayerDatabase playerDB;
+	private HUD hud;
 
 	private int currentWaveNr = 1;
 	public Wave currentWave;
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		levelSettings = GameObject.Find ("LevelSettings").GetComponent<LevelSettings>();
 		playerDB = GameObject.Find ("PlayerManager").GetComponent<PlayerDatabase>();
+		hud = GameObject.Find ("HUD").GetComponent<HUD>();
+
 		spawnpoint = levelSettings.SpawnPoint.transform;
 		LoadWave();
 	}
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour {
 
 	private void ApplyDamage(int dmg){
 		playerDB.myPlayer.health -= dmg;
+		hud.SetHP(playerDB.myPlayer.health);
 	}
 
 	public void CheckWaveOver(){
