@@ -6,7 +6,8 @@ public class LevelSettings : MonoBehaviour {
 
 	public Transform Route;
 	public List<Vector3> RoutePoints;
-	public GameObject SpawnPoint;
+	public GameObject GroundSpawnpoint;
+	public GameObject AirSpawnpoint;
 
 	public List<Wave> Waves = new List<Wave>();
 

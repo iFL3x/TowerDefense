@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour {
 	public Wave currentWave;
 	public int numOfEnemies;
 
-	private Transform spawnpoint;
+	private Transform GroundSpawnpoint;
+	private Transform AirSpawnpoint;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,9 @@ public class GameManager : MonoBehaviour {
 		playerDB = GameObject.Find ("PlayerManager").GetComponent<PlayerDatabase>();
 		hud = GameObject.Find ("HUD").GetComponent<HUD>();
 
-		spawnpoint = levelSettings.SpawnPoint.transform;
+		GroundSpawnpoint = levelSettings.GroundSpawnpoint.transform;
+		AirSpawnpoint = levelSettings.AirSpawnpoint.transform;
+
 		LoadWave();
 	}
 	
@@ -39,7 +42,11 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator SpawnEnemy(GameObject go, float delay){
 		yield return new WaitForSeconds(delay);
-		Instantiate(go, new Vector3(spawnpoint.position.x, spawnpoint.position.y, spawnpoint.position.z), Quaternion.identity);
+		if(go.tag == "GroundEnemy"){
+			Instantiate(go, new Vector3(GroundSpawnpoint.position.x, GroundSpawnpoint.position.y, GroundSpawnpoint.position.z), Quaternion.identity);
+		} else if (go.tag == "AirEnemy"){
+			Instantiate(go, new Vector3(AirSpawnpoint.position.x, AirSpawnpoint.position.y, AirSpawnpoint.position.z), Quaternion.identity);
+		}
 	}
 
 	public void EnemyReachedEndZone(int dmg){
@@ -62,8 +69,10 @@ public class GameManager : MonoBehaviour {
 				currentWaveNr++;
 				LoadWave();
 			} else {
-				//Player won
-				Debug.Log ("Congratulation - All waves are destroyed");
+				if(playerDB.myPlayer.health > 0){
+					//Player won
+					Debug.Log ("Congratulation - All waves are destroyed");
+				}
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class Cannon : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if(other.CompareTag("Enemy")){
+		if(other.CompareTag("GroundEnemy")){
 			Transform t = other.gameObject.transform;
 			if(!targets.Contains(t)){
 				targets.Add (t);
@@ -42,7 +42,7 @@ public class Cannon : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other){
-		if(other.CompareTag("Enemy")){
+		if(other.CompareTag("GroundEnemy")){
 			targets.Remove(other.gameObject.transform);
 		}
 	}
@@ -65,6 +65,7 @@ public class Cannon : MonoBehaviour {
 		nextMoveTime = Time.time + firePauseTime;
 		foreach(Transform muzzle in muzzles){
 			Instantiate(projectile, muzzle.position, muzzle.rotation);
+			muzzle.GetComponent<ParticleSystem>().Play();
 		}
 	}
 }
