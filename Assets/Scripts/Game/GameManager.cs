@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
 
 	void LoadWave(){
 		Debug.Log ("Wave " + currentWaveNr + " starting");
+		hud.SetWave(currentWaveNr);
 		currentWave = levelSettings.Waves[currentWaveNr - 1];
 		for(int i=0; i < currentWave.Enemies.Count; i++){
 			StartCoroutine(SpawnEnemy(currentWave.Enemies[i], currentWave.SpawnDelays[i]));

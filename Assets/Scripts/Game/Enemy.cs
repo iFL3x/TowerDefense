@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour {
 	private LevelSettings levelSettings;
 	private GameManager gameManager;
 
+	private bool isEnemyDestroyed = false;
+
 	// Use this for initialization
 	void Start () {
 		levelSettings = GameObject.Find ("LevelSettings").GetComponent<LevelSettings>();
@@ -47,6 +49,7 @@ public class Enemy : MonoBehaviour {
 			}
 		} else if(col.gameObject.tag == "EndZone"){
 			gameManager.EnemyReachedEndZone(damage);
+			isEnemyDestroyed = true;
 			StartCoroutine(DestroyEnemy(0.0f));
 		}
 	}
@@ -66,14 +69,13 @@ public class Enemy : MonoBehaviour {
 		}
 
 
-		if(health <= 0){
+		if(health <= 0 && !isEnemyDestroyed){
 			explosion.GetComponent<ParticleSystem>().Play();
 			speed = 0;
+			isEnemyDestroyed = true;
 			StartCoroutine(DestroyEnemy(0.23f));
 		}
 	}
-
-
 
 	IEnumerator DestroyEnemy(float delay){
 		yield return new WaitForSeconds(delay);

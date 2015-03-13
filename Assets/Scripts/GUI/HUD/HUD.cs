@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour {
-
+	
 	public GameObject HPText;
 	public GameObject CashText;
+	public GameObject Wave;
 
 	void Start(){
 		SetHUDActive(false);
@@ -13,10 +14,12 @@ public class HUD : MonoBehaviour {
 
 	public void SetHUDActive(bool active){
 		foreach(Transform child in transform){
-			if(child.name == "Panel"){
-				child.gameObject.SetActive(active);
-			}
+			child.gameObject.SetActive(active);
 		}
+	}
+
+	public void SetWave(int wave){
+		Wave.GetComponent<Text>().text = wave.ToString();
 	}
 
 	public void SetHP(int hp){
