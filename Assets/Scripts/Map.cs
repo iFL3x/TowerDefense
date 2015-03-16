@@ -16,10 +16,10 @@ public class Map
 	public string loadName;
 	
 	//This texture is used to show a little texture in the map selection menu or game lobby
-	public Texture previewTexture;
+	public Sprite previewTexture;
 	
 	//Holds the texture drawed on the loading screen
-	public Texture loadTexture;
+	public Sprite loadTexture;
 	
 	public Map Constructor(){
 		Map map = new Map();

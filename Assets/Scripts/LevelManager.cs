@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour {
 	//Holds the last level's prefix (needs to be incremented when we change the level)
 	private int lastLevelPrefix = 0;
 	
-
+	public Image mapPreviewTexture;
 
 	//Map Selection
 	public Text mapSelectionValue;
@@ -33,6 +33,7 @@ public class LevelManager : MonoBehaviour {
 		Application.LoadLevel(mainlevel);
 		if(mapList.Count > 0){
 			curMap = mapList[0];
+			mapPreviewTexture.sprite = curMap.previewTexture;
 		}
 		if(mapSelectionValue == null){
 			Debug.LogError ("Add MapSelection Value Text to LevelManager Variable");
@@ -122,6 +123,7 @@ public class LevelManager : MonoBehaviour {
 	private void ChangeMap(){
 		curMap = mapList[mapIndex];
 		mapSelectionValue.text = curMap.name;
+		mapPreviewTexture.sprite = curMap.previewTexture;
 
 	}
 
