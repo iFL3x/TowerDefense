@@ -43,7 +43,7 @@ public class LevelManager : MonoBehaviour {
 
 	}
 
-	public void LoadMap(int mapIndex){
+	public void LoadMap(){
 		Client_LoadMap(mapIndex, lastLevelPrefix + 1);
 	}
 
