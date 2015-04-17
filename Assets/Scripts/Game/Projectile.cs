@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if(other.CompareTag("GroundEnemy")){
+		if(other.CompareTag("GroundEnemy") || other.CompareTag("AirEnemy")){
 			other.GetComponent<Enemy>().applyDamage(damage);
 		} 
 
