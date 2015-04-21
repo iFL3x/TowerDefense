@@ -29,4 +29,9 @@ public class HUD : MonoBehaviour {
 	public void SetCash(int cash){
 		CashText.GetComponent<Text>().text = cash.ToString();
 	}
+
+	public void SelectTower(int index){
+		GameObject.Find ("GameManager").GetComponent<TowerPlacement>().SelectTower(index);
+	}
+
 }

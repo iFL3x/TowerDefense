@@ -1,69 +1,87 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class TowerPlacement : MonoBehaviour {
 
-	public List<Transform> towers = new List<Transform>();
-	private Transform tower;
-	public Transform placementHelpBox;
-	public LayerMask layerMask;
+	public Transform placementGrid;
+	public LayerMask placementLayerMask;
+	public Material hoverMat;
+	private Material originalMat;
+	private GameObject lastHitObj;
 
-	void Start(){
+	public Color onColor;
+	public Color offColor;
+	public GameObject[] buildings;
+	//	private int buildingIndex;
+	private GameObject building;
+
+	// Use this for initialization
+	void Start () {
+		buildingIndex = 0;
+		SetGridActive(true);
 	}
-
+	
 	void Update(){
-
+		
 		CheckTurretSelection();
-
-		if(tower != null){
-
-			//Tower Placement on mouseclick
-			if(Input.GetMouseButtonUp(0)){
-				SetTurret();
-			}
 		
+		if(building != null){
+			if(!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)){
+				Ray ray = new Ray();
+				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				RaycastHit hit = new RaycastHit();
+				
+				if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementLayerMask)){
+					if(lastHitObj){
+						lastHitObj.GetComponent<Renderer>().material = originalMat;
+					} 
+					lastHitObj = hit.collider.gameObject;
+					originalMat = lastHitObj.GetComponent<Renderer>().material;
+					lastHitObj.GetComponent<Renderer>().material = hoverMat;
+					
+				} else {
+					if(lastHitObj){
+						lastHitObj.GetComponent<Renderer>().material = originalMat;
+						lastHitObj = null;
+					}
+				}
+				
+				//Tower Placement on mouseclick
+				if(Input.GetMouseButtonDown(0) && lastHitObj){
+					if(lastHitObj.tag == "PlacementPlane_Free"){
+						GameObject newBuilding = Instantiate(building, lastHitObj.transform.position, Quaternion.identity) as GameObject;
+						newBuilding.transform.localEulerAngles = new Vector3(
+							newBuilding.transform.localEulerAngles.x, 
+							Random.Range (0,360), 
+							newBuilding.transform.localEulerAngles.z);
+						lastHitObj.tag = "PlacementPlane_Taken";
+						building = null;
+						SetGridActive(false);
+					}
+				}
+			}
+
+			
 		}
 	}
-
-	private void SetPlacementHelpBoxActive(bool state){
+	
+	private void SetGridActive(bool state){
 		if(state){
-			placementHelpBox.gameObject.SetActive(true);
+			placementGrid.gameObject.SetActive(true);
 		} else {
-			placementHelpBox.gameObject.SetActive(false);
+			placementGrid.gameObject.SetActive(false);
 		}
 	}
 
-	private void SetTurret(){
-		Ray ray = new Ray();
-		ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit = new RaycastHit();
-		
-		if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)){
-			if(hit.collider.tag == "Ground"){
-				Vector3 pos = hit.point;
-				pos.y += 1f;
-				pos.x = Mathf.Round(pos.x);
-				pos.z = Mathf.Round(pos.z);
-				Instantiate (tower, pos, Quaternion.identity);
-				tower = null;
-				SetPlacementHelpBoxActive(false);
-			}
-		}
-	}
-
-	void CheckTurretSelection(){
+	private void CheckTurretSelection(){
 		if(Input.GetKeyDown(KeyCode.Alpha1)){
-			tower = towers[0];
-			SetPlacementHelpBoxActive(true);
+			SelectTower(0);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha2)){
-			tower = towers[1];
-			SetPlacementHelpBoxActive(true);
+			SelectTower(1);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha3)){
-			tower = towers[2];
-			SetPlacementHelpBoxActive(true);
+			SelectTower(2);
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha4)){
 			
@@ -71,5 +89,10 @@ public class TowerPlacement : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Alpha5)){
 			
 		}
+	}
+
+	public void SelectTower(int index){
+		building = buildings[index];
+		SetGridActive(true);
 	}
 }

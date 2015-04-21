@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LevelSettings : MonoBehaviour {
+public class LevelSettings3 : MonoBehaviour {
 
 	public Transform Route;
 	public List<Vector3> RoutePoints;
 	public GameObject GroundSpawnpoint;
 	public GameObject AirSpawnpoint;
+
+	public List<Wave> Waves = new List<Wave>();
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +20,6 @@ public class LevelSettings : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+	
 	}
-}
+}	

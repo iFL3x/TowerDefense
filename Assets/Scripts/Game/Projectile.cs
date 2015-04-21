@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour {
 			other.GetComponent<Enemy>().applyDamage(damage);
 		} 
 
-		if(!other.CompareTag("TurretPart") && !other.CompareTag("RoutePoint")){
+		if(!other.CompareTag("TurretPart") && !other.CompareTag("RoutePoint") && !other.CompareTag("Ground")){
 			Destroy (gameObject);
 		}
 	}
