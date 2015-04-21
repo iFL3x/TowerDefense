@@ -8,16 +8,12 @@ public class TowerPlacement : MonoBehaviour {
 	public Material hoverMat;
 	private Material originalMat;
 	private GameObject lastHitObj;
-
-	public Color onColor;
-	public Color offColor;
+	
 	public GameObject[] buildings;
-	//	private int buildingIndex;
 	private GameObject building;
 
 	// Use this for initialization
 	void Start () {
-		buildingIndex = 0;
 		SetGridActive(true);
 	}
 	
@@ -49,14 +45,26 @@ public class TowerPlacement : MonoBehaviour {
 				//Tower Placement on mouseclick
 				if(Input.GetMouseButtonDown(0) && lastHitObj){
 					if(lastHitObj.tag == "PlacementPlane_Free"){
-						GameObject newBuilding = Instantiate(building, lastHitObj.transform.position, Quaternion.identity) as GameObject;
-						newBuilding.transform.localEulerAngles = new Vector3(
-							newBuilding.transform.localEulerAngles.x, 
-							Random.Range (0,360), 
-							newBuilding.transform.localEulerAngles.z);
-						lastHitObj.tag = "PlacementPlane_Taken";
-						building = null;
-						SetGridActive(false);
+						if(CheckCash(building.GetComponent<Building>().costs)){
+							SpendCash(building.GetComponent<Building>().costs);
+
+							GameObject newBuilding = Instantiate(
+								building, 
+								new Vector3(
+									lastHitObj.transform.position.x, 
+									lastHitObj.transform.position.y + 0.5f, 
+									lastHitObj.transform.position.z), 
+								Quaternion.identity) as GameObject;
+
+							newBuilding.transform.localEulerAngles = new Vector3(
+								newBuilding.transform.localEulerAngles.x, 
+								Random.Range (0,360), 
+								newBuilding.transform.localEulerAngles.z);
+
+							lastHitObj.tag = "PlacementPlane_Taken";
+							building = null;
+							SetGridActive(false);
+						}
 					}
 				}
 			}
@@ -64,7 +72,21 @@ public class TowerPlacement : MonoBehaviour {
 			
 		}
 	}
-	
+
+	private bool CheckCash(int costs){
+		if(GetComponent<GameManager>().playerDB.myPlayer.cash >= costs){
+			return true;
+		}
+		return false;
+	}
+
+	private void SpendCash(int costs){
+		if(GetComponent<GameManager>().playerDB.myPlayer.cash >= costs){
+			GetComponent<GameManager>().playerDB.myPlayer.cash -= costs;
+		}
+		GetComponent<GameManager>().UpdateHUD();
+	}
+
 	private void SetGridActive(bool state){
 		if(state){
 			placementGrid.gameObject.SetActive(true);
@@ -94,5 +116,6 @@ public class TowerPlacement : MonoBehaviour {
 	public void SelectTower(int index){
 		building = buildings[index];
 		SetGridActive(true);
-	}
+		GetComponent<GameManager>().SetSelectedTower(index);
+	}	
 }

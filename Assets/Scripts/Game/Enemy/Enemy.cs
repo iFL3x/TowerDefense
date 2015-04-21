@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour {
 	public float health = 100;
 	public float speed = 5;
 	public int damage = 20;
+	public int cash = 0;
+	public int spawnsAfterWave = 0;
 
 	public GameObject smoke;
 	public GameObject fire;
@@ -83,6 +85,7 @@ public class Enemy : MonoBehaviour {
 
 	IEnumerator DestroyEnemy(float delay){
 		yield return new WaitForSeconds(delay);
+		gameManager.EnemyDestroyed(this.cash);
 		Destroy (gameObject);
 		if(gameManager.enemyCount > 0){
 			gameManager.enemyCount -= 1;

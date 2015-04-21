@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
 	private LevelSettings levelSettings;
-	private PlayerDatabase playerDB;
+	public PlayerDatabase playerDB;
 	private HUD hud;
 	
 	private Transform GroundSpawnpoint;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
 	private float waveEndTime = 0f;
 
 	public GameObject[] enemies;
+	public List<GameObject> validEnemies;
 	public float respawnMinBase = 3.0f;
 	public float respawnMaxBase = 10.0f;
 	private float respawnMin = 3.0f;
@@ -38,6 +40,8 @@ public class GameManager : MonoBehaviour {
 		
 		GroundSpawnpoint = levelSettings.GroundSpawnpoint.transform;
 		AirSpawnpoint = levelSettings.AirSpawnpoint.transform;
+
+		validEnemies = new List<GameObject>();
 
 		SetNextWave();
 		StartNextWave();
@@ -66,6 +70,13 @@ public class GameManager : MonoBehaviour {
 		difficultyMultiplier = ((Mathf.Pow(waveLevel, 2)) * difficultyMultiplierSteps) + 1f;
 		respawnMin = respawnMinBase * (1 / difficultyMultiplier);
 		respawnMax = respawnMaxBase * (1 / difficultyMultiplier);
+
+		validEnemies.Clear();
+		foreach(GameObject enemy in enemies){
+			if(enemy.GetComponent<Enemy>().spawnsAfterWave <= waveLevel){
+				validEnemies.Add (enemy);
+			}
+		}
 	}
 
 	private void StartNextWave(){
@@ -87,23 +98,26 @@ public class GameManager : MonoBehaviour {
 
 	private void SpawnNewEnemy(){
 		int enemyChoice = 0;
-		if(waveLevel < 3){
-			enemyChoice = Random.Range(0, enemies.Length -1);
-		}
-		if(enemies[enemyChoice].tag == "GroundEnemy"){
-			Instantiate(enemies[enemyChoice], GroundSpawnpoint.position, GroundSpawnpoint.rotation);
-		} else if(enemies[enemyChoice].tag == "AirEnemy"){
-			Instantiate(enemies[enemyChoice], AirSpawnpoint.position, AirSpawnpoint.rotation);
+		enemyChoice = Random.Range(0, validEnemies.Count);
+
+		if(validEnemies[enemyChoice].tag == "GroundEnemy"){
+			Instantiate(validEnemies[enemyChoice], GroundSpawnpoint.position, GroundSpawnpoint.rotation);
+		} else if(validEnemies[enemyChoice].tag == "AirEnemy"){
+			Instantiate(validEnemies[enemyChoice], AirSpawnpoint.position, AirSpawnpoint.rotation);
 		}
 		enemyCount++;
 		lastSpawnTime = Time.time;
 		respawnInterval = Random.Range (respawnMin, respawnMax);
 	}
 
-	private void UpdateHUD(){
+	public void UpdateHUD(){
 		hud.SetHP(playerDB.myPlayer.health);
 		hud.SetCash(playerDB.myPlayer.cash);
 		hud.SetWave(waveLevel);
+	}
+
+	public void SetSelectedTower(int index){
+		hud.UpdateTowerButtons(index);
 	}
 
 	public void EnemyReachedEndZone(int dmg){
@@ -114,8 +128,14 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void EnemyDestroyed(int cash){
+		playerDB.myPlayer.cash += cash;
+		UpdateHUD();
+	}
+
 	private void ApplyDamage(int dmg){
 		playerDB.myPlayer.health -= dmg;
 		UpdateHUD();
 	}
+	
 }

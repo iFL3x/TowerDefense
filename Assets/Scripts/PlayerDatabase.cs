@@ -14,7 +14,7 @@ public class PlayerDatabase : MonoBehaviour {
 		playerList.Add(myPlayer);
 		myPlayer.name = PlayerPrefs.HasKey("PlayerName") ? PlayerPrefs.GetString("PlayerName") : defPlayerName;
 		myPlayer.health = 100;
-		myPlayer.cash = 0;
+		myPlayer.cash = 200;
 	}
 
 	public void PlayerDisconnected(NetworkPlayer network){

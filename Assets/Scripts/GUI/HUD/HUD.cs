@@ -7,9 +7,13 @@ public class HUD : MonoBehaviour {
 	public GameObject HPText;
 	public GameObject CashText;
 	public GameObject Wave;
+	public Button[] TowerButtons;
+	public Color onColor;
+	public Color offColor;
 
 	void Start(){
 		SetHUDActive(false);
+		UpdateTowerButtons(0);
 	}
 
 	public void SetHUDActive(bool active){
@@ -33,5 +37,23 @@ public class HUD : MonoBehaviour {
 	public void SelectTower(int index){
 		GameObject.Find ("GameManager").GetComponent<TowerPlacement>().SelectTower(index);
 	}
+
+	public void UpdateTowerButtons(int index){
+		foreach(Button tb in TowerButtons){
+			ColorBlock colors = tb.colors;
+			colors.normalColor = offColor;
+			colors.highlightedColor = offColor;
+			colors.pressedColor = offColor;
+			tb.colors = colors;
+		}
+
+		ColorBlock colorB = TowerButtons[index].colors;
+		colorB.normalColor = onColor;
+		colorB.highlightedColor = onColor;
+		colorB.pressedColor = onColor;
+		TowerButtons[index].colors = colorB;
+
+	}
+
 
 }
