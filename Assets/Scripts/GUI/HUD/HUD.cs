@@ -35,7 +35,7 @@ public class HUD : MonoBehaviour {
 	}
 
 	public void SelectTower(int index){
-		GameObject.Find ("GameManager").GetComponent<TowerPlacement>().SelectTower(index);
+		GameObject.Find ("GameManager").GetComponent<TurretPlacement>().SelectTower(index);
 	}
 
 	public void UpdateTowerButtons(int index){

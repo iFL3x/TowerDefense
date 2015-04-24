@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
 	private float lastSpawnTime = 0f;
 
 
+
 	// Use this for initialization
 	void Start () {
 		levelSettings = GameObject.Find ("LevelSettings").GetComponent<LevelSettings>();
@@ -46,7 +47,8 @@ public class GameManager : MonoBehaviour {
 		SetNextWave();
 		StartNextWave();
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
 		if(waveActive){
@@ -117,7 +119,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SetSelectedTower(int index){
-		hud.UpdateTowerButtons(index);
+		//hud.UpdateTowerButtons(index);
+		GameObject.Find ("HUD").GetComponent<HUD>().UpdateTowerButtons(index);
 	}
 
 	public void EnemyReachedEndZone(int dmg){
@@ -137,5 +140,5 @@ public class GameManager : MonoBehaviour {
 		playerDB.myPlayer.health -= dmg;
 		UpdateHUD();
 	}
-	
+
 }

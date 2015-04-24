@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
 	public int damage = 20;
 	public int cash = 0;
 	public int spawnsAfterWave = 0;
+	private float originalSpeed;
 
 	public GameObject smoke;
 	public GameObject fire;
@@ -34,6 +35,7 @@ public class Enemy : MonoBehaviour {
 		this.numOfRoutePoints = this.routePoints.Count;
 		this.nextRoutePoint = this.routePoints[nextRoutePointIndex];
 		this.startPositionY = transform.position.y;
+		originalSpeed = speed;
 	}
 	
 	// Update is called once per frame
@@ -57,6 +59,17 @@ public class Enemy : MonoBehaviour {
 			gameManager.EnemyReachedEndZone(damage);
 			isEnemyDestroyed = true;
 			StartCoroutine(DestroyEnemy(0.0f));
+		}
+		if(col.CompareTag("Oil")){
+			if(speed == originalSpeed){
+				speed = speed * col.gameObject.GetComponent<EnemySlower>().slowFactor;
+			}
+		}
+	}
+
+	void OnTriggerExit(Collider col){
+		if(col.CompareTag("Oil")){
+			speed = originalSpeed;
 		}
 	}
 
