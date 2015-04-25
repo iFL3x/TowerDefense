@@ -9,7 +9,9 @@ public class Enemy : MonoBehaviour {
 	public int damage = 20;
 	public int cash = 0;
 	public int spawnsAfterWave = 0;
+	public int spawnChanceValue = 1;
 	private float originalSpeed;
+	private float originalHealth;
 
 	public GameObject smoke;
 	public GameObject fire;
@@ -36,6 +38,7 @@ public class Enemy : MonoBehaviour {
 		this.nextRoutePoint = this.routePoints[nextRoutePointIndex];
 		this.startPositionY = transform.position.y;
 		originalSpeed = speed;
+		originalHealth = health;
 	}
 	
 	// Update is called once per frame
@@ -75,18 +78,10 @@ public class Enemy : MonoBehaviour {
 
 	public void applyDamage(float dmg){
 		health -= dmg;
-		if(health <= 70){
-			smoke.GetComponent<ParticleSystem>().emissionRate = 30f;
+		if(health / originalHealth <= 0.75){
 			smoke.GetComponent<ParticleSystem>().Play();
 		}
-		if(health <= 45){
-			smoke.GetComponent<ParticleSystem>().emissionRate = 60f;
-		}
-
-		if(health <= 20){
-			smoke.GetComponent<ParticleSystem>().emissionRate = 90f;
-		}
-
+		smoke.GetComponent<ParticleSystem>().emissionRate = (1 - health / originalHealth) * 100;
 
 		if(health <= 0 && !isEnemyDestroyed){
 			explosion.GetComponent<ParticleSystem>().Play();

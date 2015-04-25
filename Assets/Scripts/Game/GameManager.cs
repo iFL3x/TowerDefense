@@ -76,7 +76,10 @@ public class GameManager : MonoBehaviour {
 		validEnemies.Clear();
 		foreach(GameObject enemy in enemies){
 			if(enemy.GetComponent<Enemy>().spawnsAfterWave <= waveLevel){
-				validEnemies.Add (enemy);
+				int spawnChanceValue = enemy.GetComponent<Enemy>().spawnChanceValue;
+				for(int i = 0; i < spawnChanceValue; i++){
+					validEnemies.Add (enemy);
+				}
 			}
 		}
 	}
